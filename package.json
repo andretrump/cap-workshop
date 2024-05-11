@@ -14,5 +14,29 @@
   },
   "scripts": {
     "start": "cds-serve"
+  },
+  "cds": {
+    "requires": {
+      "auth": {
+        "kind": "basic",
+        "users": {
+          "admin@bookshop.com": {
+            "password": "123",
+            "roles": [
+              "Administrator"
+            ]
+          },
+          "sarah.smith@example.com": {
+            "password": "123"
+          },
+          "emily.wilson@example.org": {
+            "password": "123"
+          },
+          "david.jones@testdomain.net": {
+            "password": "123"
+          }
+        }
+      }
+    }
   }
 }
