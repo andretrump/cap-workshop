@@ -5,14 +5,14 @@ class OrderService extends cds.ApplicationService {
         const { Orders, Books } = cds.entities("com.bookshop");
 
         // This handler should run before the creation of an order
-        this/* phase */(/* action and/or entity */ async (req) => {
+        this.before("CREATE", "Orders", async (req) => {
             req.data.status = 0;
             const result = await SELECT`max(number) maxOrderNo`.from(Orders);
             req.data.number = result[0].maxOrderNo + 1;
         });
 
         // Implemantion of the cancel action
-        this/* phase */(/* action and/or entity */ async (req) => {
+        this.on("cancel", "Orders", async (req) => {
             const orderId = req.params[0];
             const order = await SELECT(Orders, { ID: orderId }, "status");
             if (![0, 1].includes(order.status)) {
@@ -22,7 +22,7 @@ class OrderService extends cds.ApplicationService {
         });
 
         // Implemantion of the submit action
-        this/* phase */(/* action and/or entity */ async (req) => {
+        this.on("submit", "Orders", async (req) => {
             const orderId = req.params[0];
             const order = await SELECT(Orders, { ID: orderId }, order => {
                 order.status,
@@ -48,7 +48,7 @@ class OrderService extends cds.ApplicationService {
         });
 
         // Implemantion of the getTotal function
-        this/* phase */(/* action and/or entity */ async (req) => {
+        this.on("getTotal", "Orders", async (req) => {
             const orderId = req.params[0];
             const orderWithItems = await SELECT.one.from(Orders, order => {
                 order.items(item => {
@@ -63,14 +63,14 @@ class OrderService extends cds.ApplicationService {
             return roundToDecimalPlaces(total, 2);
         });
 
-        // Implemantion of the getNumberOfSubmittedOrders function
-        this/* phase */(/* action and/or entity */ async () => {
+        // Implemantion of the cancel action
+        this.on("massCancel", async () => {
             const result = await SELECT`count(*) as count`.from(Orders).where({ status: 3 });
             return result[0].count;
         });
-        
-        // Implemantion of the cancel action
-        this/* phase */(/* action and/or entity */ async (req) => {
+
+        // Implemantion of the getNumberOfSubmittedOrders function
+        this.on("getNumberOfSubmittedOrders", async (req) => {
             const cancelPomises = req.data.IDs.map(id => this.cancel("Orders", id));
             await Promise.all(cancelPomises);
             return cancelPomises.length;
