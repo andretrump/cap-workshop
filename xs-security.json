@@ -1,0 +1,28 @@
+{
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.Administrator",
+      "description": "Bookshop Administrator"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "Administrator",
+      "description": "Bookshop Administrator",
+      "scope-references": [
+        "$XSAPPNAME.Administrator"
+      ],
+      "attribute-references": []
+    }
+  ],
+  "role-collections": [
+    {
+      "name": "Bookshop-Admin",
+      "description": "Bookshop Administrator",
+      "role-template-references": [
+        "$XSAPPNAME.Administrator"
+      ]
+    }
+  ]
+}
