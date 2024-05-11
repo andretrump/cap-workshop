@@ -1,0 +1,67 @@
+### GET metadata
+GET http://localhost:4004/odata/v4/order/$metadata
+
+### GET all Books
+GET http://localhost:4004/odata/v4/order/Books
+Authorization: Basic sarah.smith@example.com:123
+
+### GET all Books (unauthorized)
+GET http://localhost:4004/odata/v4/order/Books
+
+### GET all Orders with Items
+GET http://localhost:4004/odata/v4/order/Orders?$expand=items&$orderby=number
+Authorization: Basic sarah.smith@example.com:123
+
+### Cancel Order
+POST http://localhost:4004/odata/v4/order/Orders(ID=db1ebabb-baf4-4bd3-9527-1eb4bf328bcb)/OrderService.cancel
+Authorization: Basic sarah.smith@example.com:123
+Content-Type: application/json
+
+{}
+
+### Order total
+GET http://localhost:4004/odata/v4/order/Orders(ID=3ec8fb48-1c39-4592-8235-15651b268269)/OrderService.getTotal()
+Authorization: Basic sarah.smith@example.com:123
+
+### Mass cancel
+POST http://localhost:4004/odata/v4/order/massCancel
+Authorization: Basic admin@bookshop.com:123
+Content-Type: application/json
+
+{
+    "IDs": [
+        "60195a54-0983-4b38-8f57-1752b5f7ab5e",
+        "76908db1-642f-4204-b702-b16ddd6103d3"
+    ]
+}
+
+### Number of submitted orders
+GET http://localhost:4004/odata/v4/order/getNumberOfSubmittedOrders()
+Authorization: Basic admin@bookshop.com:123
+
+### CREATE Order
+# @name createRequest
+POST http://localhost:4004/odata/v4/order/Orders
+Authorization: Basic sarah.smith@example.com:123
+Content-Type: application/json
+
+{
+    "items": [
+        { "pos": 0, "book_ID": 202, "amount": 1 },
+        { "pos": 1, "book_ID": 203, "amount": 3 }
+    ]
+}
+
+###
+@orderId = {{createRequest.response.body.ID}}
+
+### Submit Order
+POST http://localhost:4004/odata/v4/order/Orders(ID={{orderId}})/OrderService.submit
+Authorization: Basic sarah.smith@example.com:123
+Content-Type: application/json
+
+{}
+
+### GET submitted Order
+GET http://localhost:4004/odata/v4/order/Orders(ID={{orderId}})?$expand=items
+Authorization: Basic sarah.smith@example.com:123

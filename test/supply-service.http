@@ -1,0 +1,10 @@
+### GET metadata
+GET http://localhost:4004/odata/v4/supply/$metadata
+
+### GET all Suppliers
+GET http://localhost:4004/odata/v4/supply/Suppliers
+Authorization: Basic admin@bookshop.com:123
+
+### GET all Books with Supplier
+GET http://localhost:4004/odata/v4/supply/Books?$expand=supplier
+Authorization: Basic admin@bookshop.com:123

@@ -1,0 +1,14 @@
+### Get OAuth token
+# @name client_credentials_grant
+POST {{$dotenv auth-url}}/oauth/token
+Authorization: Basic {{$dotenv client-id}}:{{$dotenv client-secret}}
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials&client_id={{$dotenv client-id}}&client_secret={{$dotenv client-secret}}
+
+###
+@token = {{client_credentials_grant.response.body.access_token}}
+
+### Get Books with Suppliers
+GET {{$dotenv srv-url}}/odata/v4/supply/Books?$expand=supplier
+Authorization: Bearer {{token}}

@@ -1,0 +1,32 @@
+### GET metadata
+GET http://localhost:4004/odata/v4/admin/$metadata
+Authorization: Basic admin@bookshop.com:123
+
+### GET all Books (unauthorized)
+GET http://localhost:4004/odata/v4/admin/Books
+
+### GET all Books
+GET http://localhost:4004/odata/v4/admin/Books
+Authorization: Basic admin@bookshop.com:123
+
+### GET Book with Genres
+GET http://localhost:4004/odata/v4/admin/Books(ID=200)?$expand=genres($expand=genre)
+Authorization: Basic admin@bookshop.com:123
+
+### CREATE Book
+POST http://localhost:4004/odata/v4/admin/Books
+Authorization: Basic admin@bookshop.com:123
+Content-Type: application/json
+
+{
+    "ID": 204,
+    "title": "Poems: Pocket Poets",
+    "descr": "The Everyman's Library Pocket Poets hardcover series is popular for its compact size and reasonable price which does not compromise content. Poems: Bronte contains poems that demonstrate a sensibility elemental in its force with an imaginative discipline and flexibility of the highest order. Also included are an Editor's Note and an index of first lines.",
+    "author": { "ID": 100 },
+    "genres": [
+        { "genre_ID": 306 }
+    ],
+    "stock": 5,
+    "price": "12.05",
+    "currency": { "code": "USD" }
+}
