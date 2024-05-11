@@ -8,19 +8,19 @@ namespace com.bookshop;
 
 entity Books : managed {
     key ID       : Integer;
-        title    : String(111);
+        title    : String(111)                @mandatory;
         descr    : String(1111);
         stock    : Integer;
         price    : Decimal;
         currency : Currency;
-        author   : Association to one Authors;
+        author   : Association to one Authors @mandatory;
         genres   : Composition of many BooksGenres
                        on genres.book = $self;
 }
 
 entity Authors : managed {
     key ID           : Integer;
-        name         : String(111);
+        name         : String(111) @mandatory;
         dateOfBirth  : Date;
         dateOfDeath  : Date;
         placeOfBirth : String;
@@ -36,8 +36,8 @@ entity BooksGenres {
 
 entity Genres : managed {
     key ID    : Integer;
-        name  : String;
-        descr : String;
+        name  : String @mandatory;
+        descr : String @mandatory;
         books : Composition of many BooksGenres
                     on books.genre = $self;
 }
@@ -52,7 +52,7 @@ type Status : Integer enum {
 
 entity Orders : cuid, managed {
     number : Integer;
-    status : Status;
+    status : Status @assert.range;
     items  : Composition of many OrderItems
                  on items.order = $self;
 }
@@ -60,6 +60,6 @@ entity Orders : cuid, managed {
 entity OrderItems {
     key order  : Association to one Orders;
     key pos    : Integer;
-        book   : Association to one Books;
-        amount : Integer;
+        book   : Association to one Books @mandatory;
+        amount : Integer                  @mandatory;
 }
