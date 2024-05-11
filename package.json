@@ -9,19 +9,21 @@
     "@sap-cloud-sdk/http-client": "^3.15.0",
     "@sap-cloud-sdk/resilience": "^3.15.0",
     "@sap/cds": "^7",
-    "express": "^4",
+    "@sap/cds-hana": "^2",
     "@sap/xssec": "^3",
-    "@sap/cds-hana": "^2"
+    "express": "^4"
   },
   "devDependencies": {
     "@cap-js/sqlite": "^1",
-    "@sap/cds-dk": "^7"
+    "@sap/cds-dk": "^7",
+    "@sap/ux-specification": "^1.120.9"
   },
   "scripts": {
     "start": "cds-serve",
     "build": "mbt build --mtar bookshop.mtar",
     "deploy": "cf deploy mta_archives/bookshop.mtar --retries 0",
-    "undeploy": "cf undeploy cap-workshop --delete-services --delete-service-keys --delete-service-brokers"
+    "undeploy": "cf undeploy cap-workshop --delete-services --delete-service-keys --delete-service-brokers",
+    "watch-maintainbooks": "cds watch --open maintainbooks/webapp/index.html?sap-ui-xx-viewCache=false"
   },
   "cds": {
     "requires": {
@@ -66,5 +68,8 @@
         }
       }
     }
-  }
+  },
+  "sapux": [
+    "app/maintainbooks"
+  ]
 }
